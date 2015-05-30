@@ -1,0 +1,42 @@
+{
+  "name": "flux-resource-marty",
+  "version": "0.0.0",
+  "description": "Marty bindings for flux-resource",
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "eslint src && babel src --out-dir lib",
+    "prepublish": "npm run build",
+    "test": "mocha --compilers js:babel/register"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/taion/flux-resource-marty.git"
+  },
+  "keywords": [
+    "marty",
+    "flux",
+    "react",
+    "rest"
+  ],
+  "author": "Jimmy Jia",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/taion/flux-resource-marty/issues"
+  },
+  "homepage": "https://github.com/taion/flux-resource-marty#readme",
+  "devDependencies": {
+    "babel": "^5.4.7",
+    "babel-eslint": "^3.1.9",
+    "chai": "^2.3.0",
+    "eslint": "^0.21.2",
+    "marty": "^0.10.1",
+    "mocha": "^2.2.5",
+    "react": "^0.13.3"
+  },
+  "peerDependencies": {
+    "marty": "^0.10.1"
+  },
+  "dependencies": {
+    "flux-resource-core": "0.0.0"
+  }
+}
