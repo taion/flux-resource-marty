@@ -26,17 +26,21 @@
   "homepage": "https://github.com/taion/flux-resource-marty#readme",
   "devDependencies": {
     "babel": "^5.4.7",
-    "babel-eslint": "^3.1.9",
+    "babel-eslint": "^3.1.11",
     "chai": "^2.3.0",
-    "eslint": "^0.21.2",
-    "marty": "^0.10.1",
+    "eslint": "^0.22.1",
+    "marty": "^0.10.3",
     "mocha": "^2.2.5",
     "react": "^0.13.3"
   },
   "peerDependencies": {
-    "marty": "^0.10.1"
+    "marty": "^0.10.3"
   },
   "dependencies": {
-    "flux-resource-core": "0.0.0"
+    "babel-runtime": "^5.4.7",
+    "constant-case": "^1.1.1",
+    "flux-resource-core": "^0.0.1",
+    "lower-case-first": "^1.0.0",
+    "override-decorator": "^1.0.1"
   }
 }

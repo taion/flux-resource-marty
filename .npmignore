@@ -1,7 +1,4 @@
 /examples
 /src
 /test
-/.babelrc
-/.eslintrc
-/.idea
-/.npmignore
+/.*
