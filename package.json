@@ -1,6 +1,6 @@
 {
   "name": "flux-resource-marty",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Marty bindings for flux-resource",
   "main": "lib/index.js",
   "scripts": {
