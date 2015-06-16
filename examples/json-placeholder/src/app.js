@@ -1,4 +1,3 @@
-import {stripTrailingSlash} from 'flux-resource-core/lib/utils';
 import martyResource from 'flux-resource-marty';
 import {
   Application,
@@ -12,9 +11,7 @@ HttpStateSource.removeHook('parseJSON');
 
 const {PostActions, PostApi, PostStore} = martyResource({
   name: 'post',
-  urlTemplate: id => stripTrailingSlash(
-    `http://jsonplaceholder.typicode.com/posts/${id}`
-  ),
+  urlFunc: id => `http://jsonplaceholder.typicode.com/posts/${id}`,
   postprocessors: [
     function parseJson(res) {
       if (!res.ok) {
