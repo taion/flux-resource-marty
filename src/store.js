@@ -1,17 +1,10 @@
 import lowerCaseFirst from 'lower-case-first';
 import {handles} from 'marty';
 
-export default function extendStore(
-  ResourceStore,
-  {
-    useFetch = true,
-    actionsKey = `${lowerCaseFirst(this.name)}Actions`
-  }
-) {
-  const {constantMappings, methodNames} = this;
-  let Store = ResourceStore;
+function addHandlers(ResourceStore) {
+  const {constantMappings} = this;
 
-  class ResourceStoreWithHandlers extends Store {
+  return class ResourceStoreWithHandlers extends ResourceStore {
     constructor(options) {
       super(options);
 
@@ -29,35 +22,93 @@ export default function extendStore(
       super.receiveSingle(args);
       this.hasChanged();
     }
+  };
+}
+
+function addFetch(
+  ResourceStore,
+  {
+    actionsKey = `${lowerCaseFirst(this.name)}Actions`
   }
-  Store = ResourceStoreWithHandlers;
+) {
+  const {methodNames, name, plural} = this;
+
+  const {getMany, getSingle} = methodNames;
+  const refreshMany = `refresh${plural}`;
+  const refreshSingle = `refresh${name}`;
+
+  const baseGetMany = ResourceStore.prototype[getMany];
+  const baseGetSingle = ResourceStore.prototype[getSingle];
+
+  function fetchMany(options, refresh) {
+    return this.fetch({
+      id: this.collectionCacheKey(options),
+      locally() {
+        if (refresh) {
+          refresh = false;
+          return undefined;
+        } else {
+          return this::baseGetMany(options);
+        }
+      },
+      remotely() {
+        return this.getActions()[getMany](options);
+      }
+    });
+  }
+
+  function fetchSingle(id, options, refresh) {
+    return this.fetch({
+      id: this.itemCacheKey(id, options),
+      locally() {
+        if (refresh) {
+          refresh = false;
+          return undefined;
+        } else {
+          return this::baseGetSingle(id, options);
+        }
+      },
+      remotely() {
+        return this.getActions()[getSingle](id, options);
+      }
+    });
+  }
+
+  return class ResourceStoreWithFetch extends ResourceStore {
+    getActions() {
+      return this.app[actionsKey];
+    }
+
+    [getMany](options) {
+      return this::fetchMany(options, false);
+    }
+
+    [refreshMany](options) {
+      return this::fetchMany(options, true);
+    }
+
+    [getSingle](id, options) {
+      return this::fetchSingle(id, options, false);
+    }
+
+    [refreshSingle](id, options) {
+      return this::fetchSingle(id, options, true);
+    }
+  };
+}
+
+export default function extendStore(
+  ResourceStore,
+  {
+    useFetch = true,
+    ...options
+  }
+) {
+  ResourceStore = this::addHandlers(ResourceStore, options);
 
   if (useFetch) {
-    const {getMany, getSingle} = methodNames;
-
-    class ResourceStoreWithFetch extends Store {
-      getActions() {
-        return this.app[actionsKey];
-      }
-
-      [getMany](options) {
-        return this.fetch(
-          this.collectionCacheKey(options),
-          () => super[getMany](options),
-          () => this.getActions()[getMany](options)
-        );
-      }
-
-      [getSingle](id, options) {
-        return this.fetch(
-          this.itemCacheKey(id, options),
-          () => super[getSingle](id, options),
-          () => this.getActions()[getSingle](id, options)
-        );
-      }
-    }
-    Store = ResourceStoreWithFetch;
+    ResourceStore = this::addFetch(ResourceStore, options);
   }
 
-  return Store;
+  return ResourceStore;
 }
