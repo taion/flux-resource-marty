@@ -26,7 +26,7 @@
   "homepage": "https://github.com/taion/flux-resource-marty#readme",
   "devDependencies": {
     "babel": "^5.5.8",
-    "babel-eslint": "^3.1.15",
+    "babel-eslint": "^3.1.17",
     "chai": "^3.0.0",
     "eslint": "^0.23.0",
     "marty": "^0.10.4",
