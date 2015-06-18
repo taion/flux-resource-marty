@@ -5,12 +5,6 @@ function addHandlers(ResourceStore) {
   const {constantMappings} = this;
 
   return class ResourceStoreWithHandlers extends ResourceStore {
-    constructor(options) {
-      super(options);
-
-      this.resetCache();
-    }
-
     @handles(constantMappings.getMany.done)
     receiveMany(args) {
       super.receiveMany(args);

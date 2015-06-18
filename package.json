@@ -39,7 +39,7 @@
   "dependencies": {
     "babel-runtime": "^5.5.8",
     "constant-case": "^1.1.1",
-    "flux-resource-core": "^0.0.2",
+    "flux-resource-core": "^0.0.3",
     "lower-case-first": "^1.0.0",
     "override-decorator": "^1.0.1"
   }
