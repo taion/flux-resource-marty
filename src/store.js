@@ -31,62 +31,67 @@ function addFetch(
   const refreshMany = `refresh${plural}`;
   const refreshSingle = `refresh${name}`;
 
-  const baseGetMany = ResourceStore.prototype[getMany];
-  const baseGetSingle = ResourceStore.prototype[getSingle];
-
-  function fetchMany(options, refresh) {
-    return this.fetch({
-      id: this.collectionCacheKey(options),
-      locally() {
-        if (refresh) {
-          refresh = false;
-          return undefined;
-        } else {
-          return this::baseGetMany(options);
-        }
-      },
-      remotely() {
-        return this.getActions()[getMany](options);
-      }
-    });
-  }
-
-  function fetchSingle(id, options, refresh) {
-    return this.fetch({
-      id: this.itemCacheKey(id, options),
-      locally() {
-        if (refresh) {
-          refresh = false;
-          return undefined;
-        } else {
-          return this::baseGetSingle(id, options);
-        }
-      },
-      remotely() {
-        return this.getActions()[getSingle](id, options);
-      }
-    });
-  }
-
   return class ResourceStoreWithFetch extends ResourceStore {
     getActions() {
       return this.app[actionsKey];
     }
 
-    [getMany](options) {
-      return this::fetchMany(options, false);
+    [getMany](options, {refresh} = {}) {
+      return this.fetch({
+        id: this.collectionKey(options),
+        locally: () => this.localGetMany(options),
+        remotely: () => this.remoteGetMany(options),
+        refresh
+      });
     }
 
     [refreshMany](options) {
-      return this::fetchMany(options, true);
+      return this[getMany](options, {refresh: true});
     }
 
-    [getSingle](id, options) {
-      return this::fetchSingle(id, options, false);
+    localGetMany(options) {
+      return super[getMany](options);
+    }
+
+    remoteGetMany(options) {
+      return this.getActions()[getMany](options);
+    }
+
+    [getSingle](id, options, {refresh} = {}) {
+      return this.fetch({
+        id: this.itemKey(id, options),
+        locally: () => this.localGetSingle(id, options),
+        remotely: () => this.remoteGetSingle(id, options),
+        refresh
+      });
     }
 
     [refreshSingle](id, options) {
-      return this::fetchSingle(id, options, true);
+      return this[getSingle](id, options, {refresh: true});
+    }
+
+    localGetSingle(id, options) {
+      return super[getSingle](id, options);
+    }
+
+    remoteGetSingle(id, options) {
+      return this.getActions()[getSingle](id, options);
+    }
+
+    fetch({refresh, ...options}) {
+      if (refresh) {
+        const baseLocally = options.locally;
+        options.locally = function refreshLocally() {
+          if (refresh) {
+            refresh = false;
+            return undefined;
+          } else {
+            return this::baseLocally();
+          }
+        };
+      }
+
+      return super.fetch(options);
     }
   };
 }
