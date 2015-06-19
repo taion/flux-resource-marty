@@ -1,7 +1,7 @@
 {
   "name": "flux-resource-marty",
   "version": "0.0.3",
-  "description": "Marty bindings for flux-resource",
+  "description": "Automatic Marty object generation for RESTful resources",
   "main": "lib/index.js",
   "scripts": {
     "build": "eslint src && babel src --out-dir lib",
