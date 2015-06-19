@@ -31,7 +31,7 @@ class ExampleApplication extends Application {
   }
 }
 
-const UserListWithData = createContainer({
+const UserListWithData = createContainer(
   UserList,
   {
     listenTo: 'userStore',
