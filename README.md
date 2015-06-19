@@ -1,5 +1,5 @@
 # flux-resource-marty
-Automatic Marty object generation for RESTful resources
+Automatic Marty object generation for RESTful resources.
 
 [![npm version](https://badge.fury.io/js/flux-resource-marty.svg)](http://badge.fury.io/js/flux-resource-marty)
 
