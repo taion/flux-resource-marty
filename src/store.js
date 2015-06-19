@@ -1,16 +1,19 @@
 import lowerCaseFirst from 'lower-case-first';
 import {handles} from 'marty';
+import Override from 'override-decorator';
 
 function addHandlers(ResourceStore) {
   const {constantMappings} = this;
 
   return class ResourceStoreWithHandlers extends ResourceStore {
+    @Override
     @handles(constantMappings.getMany.done)
     receiveMany(args) {
       super.receiveMany(args);
       this.hasChanged();
     }
 
+    @Override
     @handles(constantMappings.getSingle.done)
     receiveSingle(args) {
       super.receiveSingle(args);
@@ -38,7 +41,7 @@ function addFetch(
 
     [getMany](options, {refresh} = {}) {
       return this.fetch({
-        id: this.collectionKey(options),
+        id: `c${this.collectionKey(options)}`,
         locally: () => this.localGetMany(options),
         remotely: () => this.remoteGetMany(options),
         refresh
@@ -59,7 +62,7 @@ function addFetch(
 
     [getSingle](id, options, {refresh} = {}) {
       return this.fetch({
-        id: this.itemKey(id, options),
+        id: `i${this.itemKey(id, options)}`,
         locally: () => this.localGetSingle(id, options),
         remotely: () => this.remoteGetSingle(id, options),
         refresh
