@@ -19,6 +19,19 @@ function addHandlers(ResourceStore) {
       super.receiveSingle(args);
       this.hasChanged();
     }
+
+    @handles(
+      constantMappings.postSingle.done,
+      constantMappings.putSingle.done,
+      constantMappings.patchSingle.done
+    )
+    maybeReceiveSingle(args) {
+      // These write actions may return the inserted or modified object, so
+      // update that object if possible.
+      if (args.result) {
+        this.receiveSingle(args);
+      }
+    }
   };
 }
 
