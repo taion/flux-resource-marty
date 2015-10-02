@@ -1,6 +1,6 @@
 {
   "name": "flux-resource-marty",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Automatic Marty object generation for RESTful resources",
   "main": "lib/index.js",
   "scripts": {
