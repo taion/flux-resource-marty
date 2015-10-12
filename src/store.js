@@ -8,15 +8,15 @@ function addHandlers(ResourceStore) {
   return class ResourceStoreWithHandlers extends ResourceStore {
     @Override
     @handles(constantMappings.getMany.done)
-    receiveMany(args) {
-      super.receiveMany(args);
+    getManyDone(payload) {
+      super.receiveMany(payload);
       this.hasChanged();
     }
 
     @Override
     @handles(constantMappings.getSingle.done)
-    receiveSingle(args) {
-      super.receiveSingle(args);
+    getSingleDone(payload) {
+      super.receiveSingle(payload);
       this.hasChanged();
     }
 
@@ -25,11 +25,11 @@ function addHandlers(ResourceStore) {
       constantMappings.putSingle.done,
       constantMappings.patchSingle.done
     )
-    maybeReceiveSingle(args) {
-      // These write actions may return the inserted or modified object, so
+    changeSingleDone(args) {
+      // These change actions may return the inserted or modified object, so
       // update that object if possible.
       if (args.result) {
-        this.receiveSingle(args);
+        this.getSingleDone(args);
       }
     }
   };
