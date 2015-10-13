@@ -9,14 +9,14 @@ function addHandlers(ResourceStore) {
     @Override
     @handles(constantMappings.getMany.done)
     getManyDone(payload) {
-      super.receiveMany(payload);
+      super.getManyDone(payload);
       this.hasChanged();
     }
 
     @Override
     @handles(constantMappings.getSingle.done)
     getSingleDone(payload) {
-      super.receiveSingle(payload);
+      super.getSingleDone(payload);
       this.hasChanged();
     }
 
