@@ -1,5 +1,5 @@
 import lowerCaseFirst from 'lower-case-first';
-import {handles} from 'marty';
+import {handles} from 'marty-native';
 import Override from 'override-decorator';
 
 function addHandlers(ResourceStore) {

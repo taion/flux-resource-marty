@@ -4,5 +4,8 @@
     "no-underscore-dangle": 0,
     "quotes": [2, "single"],
     "strict": [2, "never"]
+  },
+  "globals": {
+    "fetch": false
   }
 }

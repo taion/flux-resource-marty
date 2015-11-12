@@ -1,5 +1,5 @@
 import FluxResource from 'flux-resource-core/lib/resource';
-import {ActionCreators, HttpStateSource, Store} from 'marty';
+import {ActionCreators, HttpStateSource, Store} from 'marty-native';
 import Override from 'override-decorator';
 
 import generateConstants from './constants';
@@ -15,10 +15,7 @@ export default class MartyResource extends FluxResource {
 
   @Override
   getFetch() {
-    // This will be called on an HttpStateSource.
-    return function fetch(url, request) {
-      return this.request({url, ...request});
-    };
+    return fetch;
   }
 
   @Override

@@ -1,6 +1,6 @@
 import constantCase from 'constant-case';
 import {METHODS, STATUSES} from 'flux-resource-core/lib/config';
-import {createConstants} from 'marty';
+import {createConstants} from 'marty-native';
 
 export default function generateConstants() {
   const {methodNames} = this;
